@@ -1,3 +1,10 @@
+.PHONY: clean
 
-glwindow: src/gl_window.c
-	gcc -o glwindow src/gl_window.c
+XLIBDIR = src/xlib
+
+
+xlib-window: $(XLIBDIR)/window.c
+	gcc $^ -lX11 -o $@
+
+clean:
+	rm xlib-window
