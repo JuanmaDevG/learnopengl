@@ -1,6 +1,6 @@
 .PHONY: clean
 
-XLIBDIR = src/xlib
+XLIBDIR = xlib
 
 
 xlib-window: $(XLIBDIR)/window.c
