@@ -1,5 +1,7 @@
 #include <X11/Xlib.h>
 
+int xlib_status;
+
 int main()
 {
   Display* disp = XOpenDisplay(NULL);
@@ -11,6 +13,8 @@ int main()
       disp, DefaultRootWindow(disp), 0, 0, 800, 600, 0,
       DefaultDepth(disp, DefaultScreen(disp)), InputOutput, CopyFromParent,
       CWBackPixel | CWWinGravity, &wattr);
+
+  xlib_status = XMapWindow(disp, w);
 
   XDestroyWindow(disp, w);
   XCloseDisplay(disp);
