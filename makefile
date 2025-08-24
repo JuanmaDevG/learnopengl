@@ -3,8 +3,8 @@
 XLIBDIR = xlib
 
 
-xlib-window: $(XLIBDIR)/window.c
+window: $(XLIBDIR)/window.c
 	gcc $^ -lX11 -o $@
 
 clean:
-	rm xlib-window
+	rm window
