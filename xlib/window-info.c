@@ -5,6 +5,8 @@
  * Notes for attributes that are confusing:
  * ----------------------------------------
  *
+ * CWAttributeName -> CW stands for Configure Window
+ *
  * bit_gravity: how to preserve window contents if window is resized
  *
  * win_gravity: how to reposition the window when parent window is resized
@@ -24,7 +26,7 @@
  *
  * save_under: when set to True (X definition of true), if the window is
  *  partially covered by a pop up window, the pixels will be saved without
- *  the need for a redraw.
+ *  the need for a redraw when uncovered.
  * 
  * event_mask: inclusive OR bitmask of the events types taht the window can
  *  receive.
@@ -44,6 +46,8 @@
  *  None, the parent's cursor is used.
  * */
 
+#define Depth(display) DefaultDepth(display, DefaultScreen(display))
+
 inr main()
 {
   Display *disp = XOpenDisplay(NULL);
@@ -59,15 +63,19 @@ inr main()
     .override_redirect = False,
     .colormap = CopyFromParent,
     .cursor = None,
-
-    //Should be ignored or deactivated
     .backing_store = NotUseful,
     .backing_planes = AllPlanes(),
     .backing_pixel = 0
   };
 
-  //TODO: do the rest and make small program fetch (and probably modify) window 
-  //information.
+  Widnow w = XCreateWindow(disp, DefaultRootWindow(disp), 0, 0, 800, 600, 0,
+      Depth(disp), InputOutput, CopyFromParent,
+      CWBackPixel | CWBorderPixel | CWBitGravity | CWEventMask | CWDontPropagate,
+      &attr);
 
+  // Not mapping, just extracting and printing window information
+
+  XDestroyWindow(disp, w);
+  XCloseDisplay(disp);
   return EXIT_SUCCESS;
 }
