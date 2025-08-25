@@ -11,7 +11,6 @@ int main()
     return EXIT_FAILURE;
   }
 
-  /*
   XSetWindowAttributes wattr;
   wattr.background_pixel = WhitePixel(disp, DefaultScreen(disp));
 
@@ -19,11 +18,6 @@ int main()
       disp, DefaultRootWindow(disp), 0, 0, 800, 600, 0,
       DefaultDepth(disp, DefaultScreen(disp)), InputOutput, CopyFromParent,
       CWBackPixel, &wattr);
-  */
-  Window w = XCreateSimpleWindow(
-      disp, DefaultRootWindow(disp), 0, 0, 800, 600, 0,
-      BlackPixel(disp, DefaultScreen(disp)),
-      WhitePixel(disp, DefaultScreen(disp)));
 
   XMapWindow(disp, w);
   XFlush(disp); //Force to process all events and block till done
