@@ -7,9 +7,10 @@
  *
  * CWAttributeName -> CW stands for Configure Window
  *
- * bit_gravity: how to preserve window contents if window is resized
+ * bit_gravity: how to preserve window contents if window is resized.
  *
- * win_gravity: how to reposition the window when parent window is resized
+ * win_gravity: how to reposition the window when parent window is resized or
+ *  repositioned.
  *
  * backing_store: hints X server if to maintain window contents when a window 
  *  is partially (or completely covered), in some applications this has no
@@ -73,7 +74,11 @@ inr main()
       CWBackPixel | CWBorderPixel | CWBitGravity | CWEventMask | CWDontPropagate,
       &attr);
 
-  // Not mapping, just extracting and printing window information
+  XWindowAttirbutes extracted_attr;
+  XGetWindowAttributes(disp, w, &extracted_attr);
+
+  printf("Window{x: %i, y: %i, width: %i, height: %i, border_width: %i}\n");
+  //TODO: download a C manual to print the rest of the types
 
   XDestroyWindow(disp, w);
   XCloseDisplay(disp);
