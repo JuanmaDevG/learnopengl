@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <X11/Xlib.h>
+#include <unistd.h> //TODO: remove
 
 /*
  * Notes for attributes that are confusing:
@@ -34,7 +35,19 @@
  *
  * do_not_propagate_mask: if our event_mask ignores an event type, it propagates
  *  to the parent window. We can avoid propagation by setting that bit in this
- *  mask.
+ *  mask. WARNING: it cannot interfere with .event_mask and the only events
+ *  available are:
+ *  - KeyPressMask
+ *  - KeyReleaseMask
+ *  - ButtonPressMask
+ *  - ButtonReleaseMask
+ *  - PointerMotionMask
+ *  - ButtonMotionMask
+ *  - Button1MotionMask
+ *  - Button2MotionMask
+ *  - Button3MotionMask
+ *  - Button4MotionMask
+ *  - Button5MotionMask
  *
  * override_redirect: when True, tells the window manager NOT to intercept or
  *  modify window properties, location or size. This is fine for pop-up windows
@@ -49,38 +62,40 @@
 
 #define Depth(display) DefaultDepth(display, DefaultScreen(display))
 
-inr main()
+int main()
 {
   Display *disp = XOpenDisplay(NULL);
   XSetWindowAttributes attr = {
     .background_pixel = BlackPixel(disp, DefaultScreen(disp)),
     .border_pixel = WhitePixel(disp, DefaultScreen(disp)),
-    .bit_gravity = Centergravity,
+    .bit_gravity = CenterGravity,
     .win_gravity = ForgetGravity,
     .save_under = False,
     .event_mask = KeyPressMask | KeyReleaseMask | ExposureMask,
-    .do_not_propagate_mask = 
-      0xffffffff & ~(KeyPressMask | KeyReleaseMask | ExposureMask),
+    .do_not_propagate_mask = ButtonReleaseMask, // for example
     .override_redirect = False,
     .colormap = CopyFromParent,
     .cursor = None,
     .backing_store = NotUseful,
-    .backing_planes = AllPlanes(),
+    .backing_planes = AllPlanes,
     .backing_pixel = 0
   };
 
-  Widnow w = XCreateWindow(disp, DefaultRootWindow(disp), 0, 0, 800, 600, 0,
+  Window w = XCreateWindow(disp, DefaultRootWindow(disp), 0, 0, 800, 600, 0,
       Depth(disp), InputOutput, CopyFromParent,
       CWBackPixel | CWBorderPixel | CWBitGravity | CWEventMask | CWDontPropagate,
       &attr);
 
-  XWindowAttirbutes extracted_attr;
+  XWindowAttributes extracted_attr;
   XGetWindowAttributes(disp, w, &extracted_attr);
 
-  printf("Window{x: %i, y: %i, width: %i, height: %i, border_width: %i}\n");
+  printf("Window{x: %i, y: %i, width: %i, height: %i, border_width: %i}\n",
+      extracted_attr.x, extracted_attr.y,
+      extracted_attr.width, extracted_attr.height,
+      extracted_attr.border_width);
   //TODO: download a C manual to print the rest of the types
 
   XDestroyWindow(disp, w);
   XCloseDisplay(disp);
-  return EXIT_SUCCESS;
+  return 0;
 }
