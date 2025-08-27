@@ -71,7 +71,7 @@ int main()
     .bit_gravity = CenterGravity,
     .win_gravity = ForgetGravity,
     .save_under = False,
-    .event_mask = KeyPressMask | KeyReleaseMask | ExposureMask,
+    .event_mask = (KeyPressMask | KeyReleaseMask | ExposureMask),
     .do_not_propagate_mask = ButtonReleaseMask, // for example
     .override_redirect = False,
     .colormap = CopyFromParent,
@@ -89,11 +89,100 @@ int main()
   XWindowAttributes extracted_attr;
   XGetWindowAttributes(disp, w, &extracted_attr);
 
-  printf("Window{x: %i, y: %i, width: %i, height: %i, border_width: %i}\n",
+  printf("Window { x: %i, y: %i, width: %i, height: %i, border_width: %i }\n",
       extracted_attr.x, extracted_attr.y,
       extracted_attr.width, extracted_attr.height,
       extracted_attr.border_width);
-  //TODO: download a C manual to print the rest of the types
+
+  char const* p_str;
+  switch(extracted_attr.bit_gravity) {
+    case ForgetGravity:
+      p_str = "ForgetGravity";
+      break;
+    case NorthWestGravity:
+      p_str = "NorthWestGravity";
+      break;
+    case NorthGravity:
+      p_str = "NorthGravity";
+      break;
+    case NorthEastGravity:
+      p_str = "NorthEastGravity";
+      break;
+    case WestGravity:
+      p_str = "WestGravity";
+      break;
+    case CenterGravity:
+      p_str = "CenterGravity";
+      break;
+    case EastGravity:
+      p_str = "EastGravity";
+      break;
+    case SouthWestGravity:
+      p_str = "SouthWestGravity";
+      break;
+    case SouthGravity:
+      p_str = "SouthGravity";
+      break;
+    case SouthEastGravity:
+      p_str = "SouthEastGravity";
+      break;
+    case StaticGravity:
+      p_str = "StaticGravity";
+      break;
+    default:
+      p_str = "ERROR";
+  };
+  printf("- bit_gravity: %s\n", p_str);
+
+  printf("- your_event_mask: ");
+  char const *const avail_event_masks[] = {
+    "KeyPressMask",
+    "KeyReleaseMask",
+    "ButtonPressMask",
+    "ButtonReleaseMask",
+    "EnterWindowMask",
+    "LeaveWindowMask",
+    "PointerMotionMask",
+    "PointerMotionHintMask",
+    "Button1MotionMask",
+    "Button2MotionMask",
+    "Button3MotionMask",
+    "Button4MotionMask",
+    "Button5MotionMask",
+    "ButtonMotionMask",
+    "KeymapStateMask",
+    "ExposureMask",
+    "VisibilityChangeMask",
+    "StructureNotifyMask",
+    "ResizeRedirectMask",
+    "StructureNotifyMask",
+    "ResizeRedirectMask",
+    "SubstructureNotifyMask",
+    "SubstructureRedirectMask",
+    "FocusChangeMask",
+    "PropertyChangeMask",
+    "ColormapChangeMask",
+    "OwnerGrabButtonMask"
+  };
+  if(extracted_attr.your_event_mask == NoEventMask)
+  {
+    printf("NoEventMask");
+  }
+  else {
+    printf("{ ");
+    if(extracted_attr.your_event_mask & 1) {
+      printf("KeyPressMask ");
+    }
+    for(int i=1; i <= 24; i++)
+    {
+      if((extracted_attr.your_event_mask >> i) & 1)
+        printf("| %s ", avail_event_masks[i]);
+    }
+    printf("}");
+  }
+  printf("\n");
+  
+  // I'm lazy to do the do_not_propagate_mask, it would be basially the same
 
   XDestroyWindow(disp, w);
   XCloseDisplay(disp);
