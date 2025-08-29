@@ -81,6 +81,8 @@ int main()
     .backing_pixel = 0
   };
 
+  //NOTE:
+  //For window depth, CopyFromParent is better and equally verbose
   Window w = XCreateWindow(disp, DefaultRootWindow(disp), 0, 0, 800, 600, 0,
       Depth(disp), InputOutput, CopyFromParent,
       CWBackPixel | CWBorderPixel | CWBitGravity | CWEventMask | CWDontPropagate,
