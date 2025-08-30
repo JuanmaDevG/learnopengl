@@ -14,7 +14,20 @@
  * The last parameter prop_return gets a double pointer because it NEEDS a
  * reference to WRITE into the client pointer that will point to the array of 
  * data.
+ *
+ * PropMode has 3 values:
+ * - PropModePrepend: append before the beginning
+ * - PropModeAppend: append at the end
+ * - PropModeReplace: overwrite
+ *
+ * NOTE:
+ * XRotateWindowProperties basically makes a cyclic shift on the property list, 
+ * this is just meant to change order priority:
+ * delta = 1: A B C D -> D A B C (right shift)
+ * delta = -1: A B C D -> B C D A (left shift)
  */
+
+char win_name[] = "Hello window";
 
 
 int main() {
@@ -33,19 +46,36 @@ int main() {
       CWBackPixel | CWBitGravity | CWBackingStore | CWEventMask | CWColormap,
       &attr);
 
+  // Add a property to our window (it's name)
+  XChangeProperty(
+      disp, w, XA_WM_NAME, XA_STRING, 8, PropModeReplace,
+      win_name, sizeof(win_name));
+
+  //And then extract it
   int prop_len;
   Atom *properties;
   properties = XListProperties(disp, w, &prop_len);
 
-  //TODO: add properties (none by default)
-
-  printf("Fetched %i properties whose names are:\n", prop_len);
+  printf("Fetched %i properties that are:\n", prop_len);
   for(int i=0; i < prop_len; i++)
   {
-    char *atom_name;
-    atom_name = XGetAtomName(disp, properties[i]);
-    printf("- %s\n", atom_name);
-    XFree(atom_name);
+    unsigned char *prop_return; // to XFree (not implementing generic data repr)
+    char *prop_name, *prop_type_name;
+    int prop_fmt;
+    Atom prop_type;
+    unsigned long nprop_items, prop_bytes_left;
+    XGetWindowProperty(
+        disp, w, properties[i], 0, ~0ul, False, AnyPropertyType,
+        &prop_type, &prop_fmt, &nprop_items, &prop_bytes_left, &prop_return);
+
+    prop_type_name = XGetAtomName(disp, prop_type);
+    prop_name = XGetAtomName(disp, properties[i]);
+    printf("- %s {type: %s, format: %i, items: %lu, bytes_left: %lu }\n",
+        prop_name, prop_type_name, prop_fmt, nprop_items, prop_bytes_left);
+
+    XFree(prop_name);
+    XFree(prop_return);
+    XFree(prop_type_name);
   }
 
   prop_len = 0; // Just as annotation, this is useless
