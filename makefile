@@ -1,8 +1,10 @@
 .PHONY: clean
 
+# TODO: make file more generic
+
 XLIBDIR = xlib
 
-all: window window-info atoms
+all: window attributes atoms properties selections
 
 window: $(XLIBDIR)/window.c
 	gcc $^ -lX11 -o $@
@@ -16,5 +18,8 @@ atoms: $(XLIBDIR)/atoms.c
 properties: $(XLIBDIR)/properties.c
 	gcc $^ -lX11 -o $@
 
+selections: $(XLIBDIR)/selections.c
+	gcc $^ -lX11 -o $@
+
 clean:
-	rm window attributes atoms properties
+	rm window attributes atoms properties selections
