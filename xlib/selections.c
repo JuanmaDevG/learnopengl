@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <stdlib.c>
 
+//TODO: DOES NOT WORK!!! READ FIRST
+
 Display *disp;
 Atom selection;
 const Atom s_type = XA_STRING;
@@ -31,9 +33,6 @@ void producer()
     sleep(1);
   } while(s_owner == None);
   printf("Producer got the selection owner\n");
-
-
-  //TODO: continue
 
   XCloseDisplay(disp);
   exit(0);
