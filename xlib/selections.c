@@ -13,6 +13,9 @@ Window s_owner;
 //NOTE:
 // This is an example of selections by using a producer/consumer model
 
+// TODO: CHANGE THE WHOLE PROGRAM, selections are owned by the program that 
+// creates the window and by there, that program is the producer of data
+
 
 void producer()
 {
