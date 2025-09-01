@@ -4,7 +4,7 @@
 static Display *disp;
 static int screen_num;
 static int default_depth;
-static Window wroot;
+static Window wroot; //NOTE: a window is a drawable
 
 static XSetWindowAttributes attr = {
   .bit_gravity = CenterGravity,
@@ -13,6 +13,7 @@ static XSetWindowAttributes attr = {
   .override_redirect = False,
   .event_mask = KeyPressMask | KeyReleaseMask | ExposureMask
 };
+
 
 int main()
 {
@@ -29,10 +30,13 @@ int main()
       CWBitGravity | CWBackingStore | CWSaveUnder | CWEventMask,
       &attr);
 
-  //NOTE: a window is a drawable
   Pixmap pmap = XCreatePixmap(disp, w, 100, 100, (unsigned int)default_depth);
 
-  // TODO: event loop
+  XGCValues gcval = {
+  };
+  GC gc = XCreateGC(disp, w, 0/*TODO*/, &gcval);
+
+  //TODO: drawing something and putting a loop
 
   XFreePixmap(pmap);
   XDestroyWindow(disp, w);

@@ -18,8 +18,8 @@ atoms: $(XLIBDIR)/atoms.c
 properties: $(XLIBDIR)/properties.c
 	gcc $^ -lX11 -o $@
 
-selections: $(XLIBDIR)/selections.c
-	gcc $^ -lX11 -o $@
+garphics-context: $(XLIBDIR)/graphics_context.c
+	gxx $^ -lX11 -o $@
 
 clean:
-	rm window attributes atoms properties selections
+	rm window attributes atoms properties graphics-context
