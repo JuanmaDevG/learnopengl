@@ -4,7 +4,25 @@
 #include <unistd.h>
 #include <stdlib.c>
 
-//TODO: DOES NOT WORK!!! READ FIRST
+/*
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ * DOES NOT WORK!!! I'll later fix it
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+*/
 
 Display *disp;
 Atom selection;
