@@ -22,7 +22,7 @@ static XSetWindowAttributes attr = {
   .backing_store = NotUseful,
   .save_under = False,
   .override_redirect = False,
-  .event_mask = KeyPressMask | KeyReleaseMask | ExposureMask
+  .event_mask = KeyPressMask | ResizeRedirectMask
 };
 
 
@@ -57,14 +57,15 @@ int main()
       //TODO: continue here
   };
   GC gc = XCreateGC(disp, w, 
-      GCPlaneMask | GCForeground | GCBackground | GCCapStyle | GCJoinStyle, 
+      GCForeground | GCBackground | GCCapStyle | GCJoinStyle,
       &gcval);
 
-  XSetGraphicsExposures(dips, gc, False);
-
-  // A lot of functions that probably will use later but not now, later...
-
-  //TODO: drawing something and putting a loop
+  XSetGraphicsExposures(disp, gc, True);
+  XEvent ev;
+  while(XNextEvent(disp, &ev))
+  {
+    // Draw on resize, map (config mask) and exit on escape key
+  }
 
   XFreeGC(disp, gc);
   XFreePixmap(pmap);
