@@ -60,6 +60,8 @@ int main()
       GCPlaneMask | GCForeground | GCBackground | GCCapStyle | GCJoinStyle, 
       &gcval);
 
+  XSetGraphicsExposures(dips, gc, False);
+
   // A lot of functions that probably will use later but not now, later...
 
   //TODO: drawing something and putting a loop
