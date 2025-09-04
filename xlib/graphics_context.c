@@ -56,10 +56,15 @@ int main()
     .fill_rule = EvenOddRule
       //TODO: continue here
   };
-  GC gc = XCreateGC(disp, w, 0/*TODO*/, &gcval);
+  GC gc = XCreateGC(disp, w, 
+      GCPlaneMask | GCForeground | GCBackground | GCCapStyle | GCJoinStyle, 
+      &gcval);
+
+  // A lot of functions that probably will use later but not now, later...
 
   //TODO: drawing something and putting a loop
 
+  XFreeGC(disp, gc);
   XFreePixmap(pmap);
   XDestroyWindow(disp, w);
   XCLoseDisplay(disp);
