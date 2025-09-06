@@ -48,11 +48,14 @@ int main()
    * Zeros are for the left corner of the window.
    */
   glViewport(0, 0, 800, 600);
+  glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
   
   //Core loop
   while(!glfwWindowShouldClose(w))
   {
-    glfwPollEvents();
+    glfwPollEvents(); // Use function callbacks
+    glClear(GL_COLOR_BUFFER_BIT);
+
     glfwSwapBuffers(w);
   }
 
