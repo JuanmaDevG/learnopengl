@@ -15,12 +15,12 @@ int main()
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-  GLFWWindow* w = glfwCreateWindow(800, 600, "Triangle", NULL, NULL);
+  GLFWwindow* w = glfwCreateWindow(800, 600, "Triangle", NULL, NULL);
   
   if(!w) {
     printf("Failed to create the window\n");
     glfwTerminate();
-    exit(1);
+    return 1;
   }
   // I guews this allocates, points to, and maps the window
   glfwMakeContextCurrent(w);
@@ -36,10 +36,10 @@ int main()
   /* Configure window on OpenGL state machine.
    * Zeros are for the left corner of the window.
    */
-  glViewPort(0, 0, 800, 600);
+  glViewport(0, 0, 800, 600);
   
   //Core loop
-  while(!glfwWindowHouldClose(w))
+  while(!glfwWindowShouldClose(w))
   {
     glfwPollEvents();
     glfwSwapBuffers(w);
