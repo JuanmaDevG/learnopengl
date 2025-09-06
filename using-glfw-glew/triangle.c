@@ -6,6 +6,14 @@
 #include <stdio.h>
 
 
+void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode)
+{
+  if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+  {
+    glfwSetWindowShouldClose(w, GL_TRUE);
+  }
+}
+
 int main()
 {
   //GLFW stuff
@@ -22,6 +30,9 @@ int main()
     glfwTerminate();
     return 1;
   }
+  
+  // ESCAPE key means close window
+  glfwSetKeyCallback(w, key_callback);
   // I guews this allocates, points to, and maps the window
   glfwMakeContextCurrent(w);
 
