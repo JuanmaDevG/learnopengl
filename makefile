@@ -1,13 +1,22 @@
 .PHONY: clean
 
-VANILLA_DIR=using-glfw-glew
+VPATH=src
+BUILD_DIR:=build
 
-COMPILER_FLAGS = -lX11 -lpthread -lXi -lXrandr -lGL -lGLEW -lglfw
-COMPILE_SINGLE_C_FILE = gcc -o $@ $< $(COMPILER_FLAGS)
+COMPILER:=gcc
+FLAGS:= -g
+LIBRARIES:= -lX11 -lpthread -lXi -lXrandr -lGL -lGLEW -lglfw
 
+EXECUTABLES:= triangle
 
-triangle: $(VANILLA_DIR)/triangle.c
-	$(COMPILE_SINGLE_C_FILE)
+_TARGETS:=$(addprefix $(BUILD_DIR)/, $(EXECUTABLES))
+all: $(BUILD_DIR) $(_TARGETS)
+
+$(BUILD_DIR):
+	mkdir -p $@
+
+$(BUILD_DIR)/%: %.c
+	$(COMPILER) -o $@  $< $(FLAGS) $(LIBRARIES)
 
 clean:
-	rm $(build_dir)/*
+	rm -r $(BUILD_DIR)
