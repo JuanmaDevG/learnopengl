@@ -14,8 +14,15 @@ void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode)
   }
 }
 
+
 int main()
 {
+  GLfloat vertices[] = {
+    -0.5f, -0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+    0.0f, 0.5f, 0.0f
+  };
+
   //GLFW stuff
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -31,12 +38,9 @@ int main()
     return 1;
   }
   
-  // ESCAPE key means close window
   glfwSetKeyCallback(w, key_callback);
-  // I guews this allocates, points to, and maps the window
   glfwMakeContextCurrent(w);
 
-  //GLEW stuff
   glewExperimental = GL_TRUE;
   if(glewInit() != GLEW_OK)
   {
@@ -44,13 +48,19 @@ int main()
     return 1;
   }
 
-  /* Configure window on OpenGL state machine.
-   * Zeros are for the left corner of the window.
-   */
+  GLuint vertex_buffer, index_buffer, vertex_shader, fragment_shader;
+  glGenBuffers(1, &vertex_buffer);
+  glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+  // TODO: load shader with shader_loader funcs
+  // TODO: then set the source, compile the shader and free the source code allocated memory
+
+  // Probably make fast shader load functions
+
   glViewport(0, 0, 800, 600);
   glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
   
-  //Core loop
   while(!glfwWindowShouldClose(w))
   {
     glfwPollEvents(); // Use function callbacks
