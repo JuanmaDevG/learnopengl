@@ -2,8 +2,9 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #include <stdio.h>
+
+#include "utils.h"
 
 
 void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode)
