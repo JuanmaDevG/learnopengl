@@ -15,6 +15,10 @@ void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode)
   }
 }
 
+#define INFO_LOG_SIZE 512
+GLint gl_status;
+GLchar info_log[INFO_LOG_SIZE];
+
 
 int main()
 {
@@ -24,7 +28,6 @@ int main()
     0.0f, 0.5f, 0.0f
   };
 
-  //GLFW stuff
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -49,15 +52,55 @@ int main()
     return 1;
   }
 
-  GLuint vertex_buffer, index_buffer, vertex_shader, fragment_shader;
+  GLuint vertex_buffer, index_buffer, vertex vertex_shader, fragment_shader, program;
+  void* source_file;
+  size_t source_filesize;
+
   glGenBuffers(1, &vertex_buffer);
   glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  // TODO: load shader with shader_loader funcs
-  // TODO: then set the source, compile the shader and free the source code allocated memory
 
-  // Probably make fast shader load functions
+  vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+  load_file("../src/shaders/basic_vert.glsl", &source_file, &source_filesize);
+  glShaderSource(vertex_shader, 1, &source_file, NULL);
+  glCompileShader(vertex_shader);
+  free(source_file);
+  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &gl_status);
+  if(!gl_status)
+  {
+    glGetShaderInfoLog(vertex_shader, INFO_LOG_SIZE, NULL, info_log);
+    printf("Failed to compile vertex shader: %s\n", info_log);
+    return 1;
+  }
+
+  fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+  load_file("../src/shaders/basic_frag.glsl", &source_file, &source_filesize);
+  glShaderSource(fragment_shader, 1, source_file, NULL);
+  glCompileShader(fragment_shader);
+  free(source_file);
+  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &gl_status);
+  if(!gl_status)
+  {
+    glGetShaderInfoLog(fragment_shader, INFO_LOG_SIZE, NULL, info_log);
+    printf("Failed to compile fragment shader: %s", info_log);
+    return 1;
+  }
+
+  program = glCreateProgram();
+  glAttachShader(program, vertex_shader);
+  glAttachShader(program, fragment_shader);
+  glLinkProgram(program); //Link the shaders vec_sh_out -> frag_sh_in
+  glDeleteShader(vertex_shader);
+  glDeleteShader(fragment_shader);
+
+  glGetProgramiv(program, GL_LINK_STATUS, &gl_status);
+  if(!gl_status)
+  {
+    glGetProgramInfoLog(program, INFO_LOG_SIZE, NULL, info_log);
+    printf("Failed to link the shader program: %s", info_log);
+    return 1;
+  }
+  glUseProgram(program);
 
   glViewport(0, 0, 800, 600);
   glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
