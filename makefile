@@ -3,7 +3,7 @@
 VPATH=src
 BUILD_DIR:=build
 
-EXECUTABLES:= triangle
+EXECUTABLES:= triangle triforce
 
 COMPILER:=gcc
 FLAGS:= -g -Wall -Werror
