@@ -52,17 +52,23 @@ int main()
     return 1;
   }
 
-  GLuint vertex_buffer, index_buffer, vertex vertex_shader, fragment_shader, program;
+  GLuint vertex_buffer, vertex_array, vertex_shader, fragment_shader, program; // index_buffer, vertex_array
   void* source_file;
   size_t source_filesize;
+
+  glGenVertexArrays(1, &vertex_array);
+  glBindVertexArray(vertex_array);
 
   glGenBuffers(1, &vertex_buffer);
   glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+  glEnableVertexAttribArray(0);
+  glBindVertexArray(0); // Unbind
 
   vertex_shader = glCreateShader(GL_VERTEX_SHADER);
   load_file("../src/shaders/basic_vert.glsl", &source_file, &source_filesize);
-  glShaderSource(vertex_shader, 1, &source_file, NULL);
+  glShaderSource(vertex_shader, 1, (const GLchar *const *)&source_file, NULL);
   glCompileShader(vertex_shader);
   free(source_file);
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &gl_status);
@@ -75,7 +81,7 @@ int main()
 
   fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
   load_file("../src/shaders/basic_frag.glsl", &source_file, &source_filesize);
-  glShaderSource(fragment_shader, 1, source_file, NULL);
+  glShaderSource(fragment_shader, 1, (const GLchar *const *)&source_file, NULL);
   glCompileShader(fragment_shader);
   free(source_file);
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &gl_status);
@@ -89,7 +95,7 @@ int main()
   program = glCreateProgram();
   glAttachShader(program, vertex_shader);
   glAttachShader(program, fragment_shader);
-  glLinkProgram(program); //Link the shaders vec_sh_out -> frag_sh_in
+  glLinkProgram(program);
   glDeleteShader(vertex_shader);
   glDeleteShader(fragment_shader);
 
@@ -97,10 +103,11 @@ int main()
   if(!gl_status)
   {
     glGetProgramInfoLog(program, INFO_LOG_SIZE, NULL, info_log);
-    printf("Failed to link the shader program: %s", info_log);
+    printf("Failed to link the shader program: %s\n", info_log);
     return 1;
   }
   glUseProgram(program);
+  glBindVertexArray(vertex_array);
 
   glViewport(0, 0, 800, 600);
   glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
@@ -109,6 +116,8 @@ int main()
   {
     glfwPollEvents(); // Use function callbacks
     glClear(GL_COLOR_BUFFER_BIT);
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(w);
   }

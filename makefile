@@ -3,11 +3,11 @@
 VPATH=src
 BUILD_DIR:=build
 
-COMPILER:=gcc
-FLAGS:= -g
-LIBRARIES:= -lX11 -lpthread -lXi -lXrandr -lGL -lGLEW -lglfw
-
 EXECUTABLES:= triangle
+
+COMPILER:=gcc
+FLAGS:= -g -Wall -Werror
+LIBRARIES:= -lX11 -lpthread -lXi -lXrandr -lGL -lGLEW -lglfw
 
 _TARGETS:=$(addprefix $(BUILD_DIR)/, $(EXECUTABLES))
 all: $(BUILD_DIR) $(_TARGETS)

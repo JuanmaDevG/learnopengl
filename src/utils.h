@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void load_file(const char *const restrict filename, void **const filebuf, size_t *const file_size)
 {
