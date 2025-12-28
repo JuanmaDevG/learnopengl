@@ -106,12 +106,12 @@ int main()
   v_shader = glCreateShader(GL_VERTEX_SHADER);
   f_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-  load_file("../src/shaders/basic.vert", &source, &source_size);
+  load_file("../src/shaders/basic.vert", &source_size, &source);
   glShaderSource(v_shader, 1, (const GLchar *const *)&source, NULL);
   glCompileShader(v_shader);
   check_shader(v_shader);
   free(source);
-  load_file("../src/shaders/basic.frag", &source, &source_size);
+  load_file("../src/shaders/basic.frag", &source_size, &source);
   glShaderSource(f_shader, 1, (const GLchar *const *)&source, NULL);
   glCompileShader(f_shader);
   check_shader(f_shader);

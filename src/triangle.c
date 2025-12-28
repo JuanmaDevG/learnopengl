@@ -67,7 +67,7 @@ int main()
   glBindVertexArray(0); // Unbind
 
   vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  load_file("../src/shaders/basic.vert", &source_file, &source_filesize);
+  load_file("../src/shaders/basic.vert", &source_filesize, &source_file);
   glShaderSource(vertex_shader, 1, (const GLchar *const *)&source_file, NULL);
   glCompileShader(vertex_shader);
   free(source_file);
@@ -80,7 +80,7 @@ int main()
   }
 
   fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  load_file("../src/shaders/basic.frag", &source_file, &source_filesize);
+  load_file("../src/shaders/basic.frag", &source_filesize, &source_file);
   glShaderSource(fragment_shader, 1, (const GLchar *const *)&source_file, NULL);
   glCompileShader(fragment_shader);
   free(source_file);

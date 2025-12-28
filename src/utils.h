@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void load_file(const char *const restrict filename, void **const filebuf, size_t *const file_size)
+void load_file(const char *const restrict filename, size_t *const file_size, void **const filebuf)
 {
   struct stat file_status;
   if(stat(filename, &file_status) < 0)
