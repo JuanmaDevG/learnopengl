@@ -5,50 +5,6 @@
 
 #include "utils.h"
 
-#define INFO_LOG_SIZE 512
-
-
-void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode)
-{
-  if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-  {
-    glfwSetWindowShouldClose(w, GL_TRUE);
-  }
-  else if(key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-  {
-    static GLenum cur_mode = GL_FILL;
-    if(cur_mode == GL_FILL) cur_mode = GL_LINE;
-    else cur_mode = GL_FILL;
-    glPolygonMode(GL_FRONT_AND_BACK, cur_mode);
-  }
-}
-
-void check_shader(const GLuint sh)
-{
-  GLint compilation_ok;
-  GLchar info_log[INFO_LOG_SIZE];
-  glGetShaderiv(sh, GL_COMPILE_STATUS, &compilation_ok);
-  if(!compilation_ok)
-  {
-    glGetShaderInfoLog(sh, INFO_LOG_SIZE, NULL, info_log);
-    printf("Failed to compile shader %u, %s\n", sh, info_log);
-    exit(1);
-  }
-}
-
-void check_program(GLuint prog)
-{
-  GLint linkage_ok;
-  GLchar info_log[INFO_LOG_SIZE];
-  glGetProgramiv(prog, GL_LINK_STATUS, &linkage_ok);
-  if(!linkage_ok)
-  {
-    glGetProgramInfoLog(prog, GL_INFO_LOG_LENGTH, NULL, info_log);
-    printf("Failed to link program %u, %s\n", prog, info_log);
-    exit(1);
-  }
-}
-
 
 int main()
 {

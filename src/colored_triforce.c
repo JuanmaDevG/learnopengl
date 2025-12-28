@@ -5,51 +5,6 @@
 
 #include "utils.h"
 
-#define INFO_LOG_LENGTH 512
-
-void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode)
-{
-  if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-  {
-    glfwSetWindowShouldClose(w, GL_TRUE);
-  }
-  else if(key == GLFW_KEY_SPACE  && action == GLFW_PRESS)
-  {
-    static GLenum pmode = GL_FILL;
-    if(pmode == GL_FILL) pmode = GL_LINE;
-    else pmode = GL_FILL;
-    glPolygonMode(GL_FRONT_AND_BACK, pmode);
-  }
-}
-
-void check_shader(GLuint sh)
-{
-  GLint status_ok;
-  GLchar info_log[INFO_LOG_LENGTH];
-  glGetShaderiv(sh, GL_COMPILE_STATUS, &status_ok);
-  if(!status_ok)
-  {
-    glGetShaderInfoLog(sh, INFO_LOG_LENGTH, NULL, info_log);
-    printf("Could not compile shader %u, %s\n", sh, info_log);
-    exit(1);
-  }
-}
-
-//void glPrintError();
-
-void check_program(GLuint prog)
-{
-  GLint linkage_ok;
-  GLchar info_log[INFO_LOG_LENGTH];
-  glGetProgramiv(prog, GL_LINK_STATUS, &linkage_ok);
-  if(!linkage_ok)
-  {
-    glGetProgramInfoLog(prog, GL_INFO_LOG_LENGTH, NULL, info_log);
-    printf("Failed to link program %u, %s\n", prog, info_log);
-    exit(1);
-  }
-}
-
 
 int main()
 {
@@ -112,6 +67,10 @@ int main()
     printf("It was not possible to initialize glew\n");
     exit(1);
   }
+  
+  GLint max_attr_per_vao;
+  glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &max_attr_per_vao);
+  printf("There is a maximum of %i vertex attributes per VAO\n", max_attr_per_vao);
 
   GLuint arrays[3], buffers[3], programs[3], v_shader, f_shader;
   void* source;

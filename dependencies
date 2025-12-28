@@ -1,0 +1,7 @@
+mesa-common-dev
+libx11-dev
+libxi-dev
+libxrandr-dev
+libcglm-dev
+libglfw3-dev
+libglew-dev

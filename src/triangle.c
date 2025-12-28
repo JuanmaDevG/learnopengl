@@ -7,21 +7,10 @@
 #include "utils.h"
 
 
-void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode)
-{
-  if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-  {
-    glfwSetWindowShouldClose(w, GL_TRUE);
-  }
-}
-
-#define INFO_LOG_SIZE 512
-GLint gl_status;
-GLchar info_log[INFO_LOG_SIZE];
-
-
 int main()
 {
+  GLint gl_status;
+  GLchar info_log[INFO_LOG_LENGTH];
   GLfloat vertices[] = {
     -0.5f, -0.5f, 0.0f,
     0.5f, -0.5f, 0.0f,
@@ -74,7 +63,7 @@ int main()
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &gl_status);
   if(!gl_status)
   {
-    glGetShaderInfoLog(vertex_shader, INFO_LOG_SIZE, NULL, info_log);
+    glGetShaderInfoLog(vertex_shader, INFO_LOG_LENGTH, NULL, info_log);
     printf("Failed to compile vertex shader: %s\n", info_log);
     return 1;
   }
@@ -87,7 +76,7 @@ int main()
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &gl_status);
   if(!gl_status)
   {
-    glGetShaderInfoLog(fragment_shader, INFO_LOG_SIZE, NULL, info_log);
+    glGetShaderInfoLog(fragment_shader, INFO_LOG_LENGTH, NULL, info_log);
     printf("Failed to compile fragment shader: %s", info_log);
     return 1;
   }
@@ -102,7 +91,7 @@ int main()
   glGetProgramiv(program, GL_LINK_STATUS, &gl_status);
   if(!gl_status)
   {
-    glGetProgramInfoLog(program, INFO_LOG_SIZE, NULL, info_log);
+    glGetProgramInfoLog(program, INFO_LOG_LENGTH, NULL, info_log);
     printf("Failed to link the shader program: %s\n", info_log);
     return 1;
   }
