@@ -21,10 +21,64 @@ int main()
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   GLFWwindow* w = glfwCreateWindow(800, 600, "Triangle moving and blinking", NULL, NULL);
+  if(!w) {
+    printf("Could not create the window\n");
+    exit(1)
+  }
 
-  //TODO: do buffers and shaders stuff
+  glfwMakeContextCurrent(w);
+  glewExperimental = GL_TRUE;
+  if(glewInit() != GLEW_OK) {
+    printf("Could not initialize glew\n");
+    exit(1);
+  }
 
-  //TODO: modify color and position by uniform
+  GLuint v_arr, v_buf, prog, v_shader, f_shader;
+  void* source;
+  size_t source_size;
+
+  glGenVertexArrays(1, &v_arr);
+  glGenBuffers(1, &v_buf);
+  glBindVertexArray(v_arr);
+  glBindBuffer(GL_ARRAY_BUFFER, v_buf);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(triangle), triangle, GL_STATIC_DRAW);
+  glVertexAttribArray(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+  glEnableVertexAttribArray(0);
+  glBindVertexArray(0);
+
+  prog = glCreateProgram();
+  v_shader = glCreateShader(GL_VERTEX_SHADER);
+  f_shader = glCreateShader(GL_FRAGMENT_SHADER);
+  load_file("../src/shaders/basic_anim.vert", &source_size, &source);
+  glShaderSource(v_shader, 1, (const GLchar *const *)&source, NULL);
+  glCompileShader(v_shader);
+  check_shader(v_shader);
+  free(source);
+  load_file("../src/shaders/grad_blink.frag", &source_size, &source);
+  glShaderSource(f_shader, 1, (const GLchar *const *)&source, NULL);
+  glCompileShader(f_shader);
+  check_shader(f_shader);
+  free(source);
+  
+  glAttachShader(prog, v_shader);
+  glAttachShader(prog, f_shader);
+  glLinkProgram(prog);
+  glDeleteShader(v_shader);
+  glDeleteShader(f_shader);
+
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glViewport(0, 0, 800, 600);
+
+  //TODO: make uniform stuff and write shaders
+  while(!glfwWindowShouldClose(w))
+  {
+    glfwPollEvents();
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    //Render calls and calculus
+    
+    glfwSwapBuffers(w);
+  }
 
   return 0;
 }
