@@ -73,6 +73,7 @@ int main()
   glViewport(0, 0, 800, 600);
 
   GLint u_timeloc = glGetUniformLocation(prog, "u_time");
+  check_uniform(u_timeloc);
   while(!glfwWindowShouldClose(w))
   {
     glfwPollEvents();

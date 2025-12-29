@@ -57,6 +57,15 @@ void check_program(GLuint prog)
   }
 }
 
+void check_uniform(GLint u_loc)
+{
+  if(u_loc == -1)
+  {
+    fprintf(stderr, "Uniform unreachable because it doesn't exist or it was not used and the GLSL compiler removed it\n");
+    exit(1);
+  }
+}
+
 
 void load_file(const char *const restrict filename, size_t *const file_size, void **const filebuf)
 {
