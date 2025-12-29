@@ -2,11 +2,9 @@
 
 uniform float u_time;
 
-//TODO: probably another uniform that makes color selection
-
 out vec4 color;
 
 void main()
 {
-  //TODO: animate color gradient
+  color = vec4(0.5f + (sin(u_time) / 2), 0.5f + (cos(u_time) / 2), 0.5f + (cos(u_time * 2) / 3), 1.0f);
 }

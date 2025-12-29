@@ -8,10 +8,10 @@
 
 int main()
 {
-  const GLfloat triangle = {
-    -0.5f, 0.5f, 0.0f,
-    -1.0f, -0.5f, 0.0f,
-    0.0f, -0.5f, 0.0f
+  const GLfloat triangle[] = {
+    0.0f, 0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f
   };
 
   glfwInit();
@@ -23,8 +23,9 @@ int main()
   GLFWwindow* w = glfwCreateWindow(800, 600, "Triangle moving and blinking", NULL, NULL);
   if(!w) {
     printf("Could not create the window\n");
-    exit(1)
+    exit(1);
   }
+  glfwSetKeyCallback(w, key_callback);
 
   glfwMakeContextCurrent(w);
   glewExperimental = GL_TRUE;
@@ -42,7 +43,7 @@ int main()
   glBindVertexArray(v_arr);
   glBindBuffer(GL_ARRAY_BUFFER, v_buf);
   glBufferData(GL_ARRAY_BUFFER, sizeof(triangle), triangle, GL_STATIC_DRAW);
-  glVertexAttribArray(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
   glEnableVertexAttribArray(0);
   glBindVertexArray(0);
 
@@ -66,16 +67,19 @@ int main()
   glDeleteShader(v_shader);
   glDeleteShader(f_shader);
 
+  glBindVertexArray(v_arr);
+  glUseProgram(prog);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glViewport(0, 0, 800, 600);
 
-  //TODO: make uniform stuff and write shaders
+  GLint u_timeloc = glGetUniformLocation(prog, "u_time");
   while(!glfwWindowShouldClose(w))
   {
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT);
     
-    //Render calls and calculus
+    glUniform1f(u_timeloc, (GLfloat)glfwGetTime());
+    glDrawArrays(GL_TRIANGLES, 0, 3);
     
     glfwSwapBuffers(w);
   }
