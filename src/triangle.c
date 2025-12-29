@@ -26,7 +26,7 @@ int main()
   GLFWwindow* w = glfwCreateWindow(800, 600, "Triangle", NULL, NULL);
   
   if(!w) {
-    printf("Failed to create the window\n");
+    fprintf(stderr, "Failed to create the window\n");
     glfwTerminate();
     return 1;
   }
@@ -37,7 +37,7 @@ int main()
   glewExperimental = GL_TRUE;
   if(glewInit() != GLEW_OK)
   {
-    printf("Failed to initialize GLEW\n");
+    fprintf(stderr, "Failed to initialize GLEW\n");
     return 1;
   }
 
@@ -64,7 +64,7 @@ int main()
   if(!gl_status)
   {
     glGetShaderInfoLog(vertex_shader, INFO_LOG_LENGTH, NULL, info_log);
-    printf("Failed to compile vertex shader: %s\n", info_log);
+    fprintf(stderr, "Failed to compile vertex shader: %s\n", info_log);
     return 1;
   }
 
@@ -77,7 +77,7 @@ int main()
   if(!gl_status)
   {
     glGetShaderInfoLog(fragment_shader, INFO_LOG_LENGTH, NULL, info_log);
-    printf("Failed to compile fragment shader: %s", info_log);
+    fprintf(stderr, "Failed to compile fragment shader: %s", info_log);
     return 1;
   }
 
@@ -92,7 +92,7 @@ int main()
   if(!gl_status)
   {
     glGetProgramInfoLog(program, INFO_LOG_LENGTH, NULL, info_log);
-    printf("Failed to link the shader program: %s\n", info_log);
+    fprintf(stderr, "Failed to link the shader program: %s\n", info_log);
     return 1;
   }
   glUseProgram(program);

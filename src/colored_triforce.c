@@ -55,7 +55,7 @@ int main()
 
   GLFWwindow* w = glfwCreateWindow(800, 600, "Colored triforce", NULL, NULL);
   if(!w) {
-    printf("It was not possible to create the window\n");
+    fprintf(stderr, "It was not possible to create the window\n");
     exit(1);
   }
   glfwSetKeyCallback(w, key_callback);
@@ -64,7 +64,7 @@ int main()
   glewExperimental = GL_TRUE;
   if(glewInit() != GLEW_OK)
   {
-    printf("It was not possible to initialize glew\n");
+    fprintf(stderr, "It was not possible to initialize glew\n");
     exit(1);
   }
   

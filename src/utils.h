@@ -37,7 +37,7 @@ void check_shader(GLuint sh)
   if(!status_ok)
   {
     glGetShaderInfoLog(sh, INFO_LOG_LENGTH, NULL, info_log);
-    printf("Could not compile shader %u, %s\n", sh, info_log);
+    fprintf(stderr, "Could not compile shader %u, %s\n", sh, info_log);
     exit(1);
   }
 }
@@ -52,7 +52,7 @@ void check_program(GLuint prog)
   if(!linkage_ok)
   {
     glGetProgramInfoLog(prog, GL_INFO_LOG_LENGTH, NULL, info_log);
-    printf("Failed to link program %u, %s\n", prog, info_log);
+    fprintf(stderr, "Failed to link program %u, %s\n", prog, info_log);
     exit(1);
   }
 }

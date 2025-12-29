@@ -27,7 +27,7 @@ int main()
   GLFWwindow* w = glfwCreateWindow(800, 600, "Zelda's triforce", NULL, NULL);
 
   if(!w) {
-    printf("The window was not created\n");
+    fprintf(stderr, "The window was not created\n");
     glfwTerminate();
     return 1;
   }
@@ -37,7 +37,7 @@ int main()
 
   glewExperimental = GL_TRUE;
   if(glewInit() != GLEW_OK) {
-    printf("Failed to initialize GLEW\n");
+    fprintf(stderr, "Failed to initialize GLEW\n");
     return 0;
   }
 
