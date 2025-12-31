@@ -5,3 +5,4 @@ libxrandr-dev
 libcglm-dev
 libglfw3-dev
 libglew-dev
+libsoil-dev
