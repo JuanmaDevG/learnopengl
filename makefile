@@ -3,7 +3,11 @@
 VPATH=src
 BUILD_DIR:=build
 
-EXECUTABLES:= triangle triforce colored_triforce movcolor_triangle
+EXECUTABLES:= triangle \
+							triforce \
+							colored_triforce \
+							movcolor_triangle \
+							tricolored_triangle
 
 COMPILER:=gcc
 FLAGS:= -g -Wall -Werror
