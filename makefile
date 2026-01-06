@@ -7,11 +7,12 @@ EXECUTABLES:= triangle \
 							triforce \
 							colored_triforce \
 							movcolor_triangle \
-							tricolored_triangle
+							tricolored_triangle \
+							textures
 
 COMPILER:=gcc
 FLAGS:= -g -Wall -Werror
-LIBRARIES:= -lX11 -lpthread -lXi -lXrandr -lGL -lGLEW -lglfw
+LIBRARIES:= -lSOIL -lX11 -lpthread -lXi -lXrandr -lGL -lGLEW -lglfw
 
 _TARGETS:=$(addprefix $(BUILD_DIR)/, $(EXECUTABLES))
 all: $(BUILD_DIR) $(_TARGETS)

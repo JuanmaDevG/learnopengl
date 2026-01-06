@@ -21,17 +21,17 @@ int main()
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLWF_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
   GLFWwindow* w = glfwCreateWindow(800, 600, "Texture", NULL, NULL);
   
   glfwSetKeyCallback(w, key_callback);
   glfwMakeContextCurrent(w);
 
-  glewStatic = GL_TRUE;
+  glewExperimental = GL_TRUE;
   glewInit();
 
-  GLuint v_arr, v_buff, e_buf, tex, prog, v_shader, f_shader;
+  GLuint v_arr, v_buf, e_buf, tex, prog, v_shader, f_shader;
   void* source;
   size_t source_size;
 
@@ -41,10 +41,10 @@ int main()
   glBindVertexArray(v_arr);
   glBindBuffer(GL_ARRAY_BUFFER, v_buf);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e_buf);
-  glBUfferData(GL_ARRAY_BUFFER, sizeof(texture_fig), texture_fig, GL_STATIC_DRAW);
-  glBUfferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIS_DRAW);
-  glVertexAttribPointer(0, 3, 5 * sizeof(GLfloat), (void*)0);
-  glVertexAttribPointer(1, 2, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+  glBufferData(GL_ARRAY_BUFFER, sizeof(texture_fig), texture_fig, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
   glBindVertexArray(0);
@@ -71,8 +71,15 @@ int main()
 
   int width, height;
   unsigned char* img;
-  img = SOIL_load_image("../src/img/shbeek.jpg", &width, &height, 0, SOIL_LOAD_RGB); //TODO: why channels param is zeroed
+  GLint tx_uloc; // uniform loc
+  img = SOIL_load_image("../src/img/uwu.png", &width, &height, 0, SOIL_LOAD_RGB);
+  if(img == NULL)
+  {
+    fprintf(stderr, "%s\n", SOIL_last_result());
+    exit(1);
+  }
   glGenTextures(1, &tex);
+  glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, tex);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
@@ -90,20 +97,20 @@ int main()
       img);
   glGenerateMipmap(GL_TEXTURE_2D);
   SOIL_free_image_data(img);
-  glBindTexture(GL_TEXTURE_2D, 0);
 
-  glBindTexture2D(GL_TEXTURE_2D, tex); //TODO: mess up with uniforms, this alone is likely to not work
   glBindVertexArray(v_arr);
   glUseProgram(prog);
+  tx_uloc = glGetUniformLocation(prog, "tex_slot");
+  glUniform1i(tx_uloc, 0);
+
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glViewport(0, 0, 800, 600);
-  //TODO: get uniform locations
   while(!glfwWindowShouldClose(w))
   {
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT);
 
-    //TODO: draw calls and stuff
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 
     glfwSwapBuffers(w);
   }
