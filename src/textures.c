@@ -10,7 +10,7 @@ int main()
   const GLfloat texture_fig[] = {
     // coords        // texture coords
     -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
     -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
     0.5f, -0.5f, 0.0f, 1.0f, 1.0f
   };
@@ -72,7 +72,7 @@ int main()
   int width, height;
   unsigned char* img;
   GLint tx_uloc; // uniform loc
-  img = SOIL_load_image("../src/img/uwu.png", &width, &height, 0, SOIL_LOAD_RGB);
+  img = SOIL_load_image("../src/img/bear.png", &width, &height, 0, SOIL_LOAD_RGB);
   if(img == NULL)
   {
     fprintf(stderr, "%s\n", SOIL_last_result());
