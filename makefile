@@ -8,7 +8,7 @@ EXECUTABLES:= triangle \
 							colored_triforce \
 							movcolor_triangle \
 							tricolored_triangle \
-							textures
+							texture
 
 COMPILER:=gcc
 FLAGS:= -g -Wall -Werror
