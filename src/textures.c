@@ -72,7 +72,9 @@ int main()
   int width, height;
   unsigned char* img;
   GLint tx_uloc; // uniform loc
-  img = SOIL_load_image("../src/img/bear.png", &width, &height, 0, SOIL_LOAD_RGB);
+  // WARNING: extracting png images is way more difficult, will investigate later
+  // WARNING: also, it seems like SOIL doesn't support progressive JPEG files, so be careful
+  img = SOIL_load_image("../src/img/cursed_teletubbies.jpg", &width, &height, 0, SOIL_LOAD_RGB);
   if(img == NULL)
   {
     fprintf(stderr, "%s\n", SOIL_last_result());
